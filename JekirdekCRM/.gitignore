@@ -1,0 +1,20 @@
+# Ignore local databases
+*.mdf
+*.ldf
+*.sqlite
+*.db
+
+# Ignore EF Core migrations (optional)
+Migrations/
+
+# Ignore sensitive configuration files (optional)
+appsettings.Development.json
+secrets.json
+
+# Ignore build and system files
+bin/
+obj/
+.vscode/
+.idea/
+.vs/
+.vs/

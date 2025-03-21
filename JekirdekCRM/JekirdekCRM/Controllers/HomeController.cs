@@ -6,11 +6,13 @@ namespace JekirdekCRM.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> logger;
+        private readonly DatabaseContext context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> _logger, DatabaseContext _context)
         {
-            _logger = logger;
+            logger = _logger;
+            context = _context;
         }
 
         public IActionResult Index()
