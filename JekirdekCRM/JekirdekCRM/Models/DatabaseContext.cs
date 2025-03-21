@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using JekirdekCRM.Models.DBModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace JekirdekCRM.Models
 {
@@ -9,5 +10,12 @@ namespace JekirdekCRM.Models
 
 
         }
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Customer> Customers { get; set; }
+
+        public DbSet<Log> Logs { get; set; }
+
     }
 }
