@@ -1,4 +1,4 @@
-namespace JekirdekCRM.Models
+namespace JekirdekCRM.Models.ViewModels
 {
     public class ErrorViewModel
     {
