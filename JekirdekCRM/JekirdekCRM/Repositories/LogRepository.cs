@@ -12,7 +12,7 @@ namespace JekirdekCRM.Repositories
             _context = context;
         }
 
-        public async Task AddAsync(Log log)
+        public async Task CreateLogAsync(Log log)
         {
             _context.Logs.Add(log);
             await _context.SaveChangesAsync();

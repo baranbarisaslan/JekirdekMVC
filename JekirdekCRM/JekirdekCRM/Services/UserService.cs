@@ -39,10 +39,10 @@ namespace JekirdekCRM.Services
                 CreatedAt = DateTime.UtcNow,
                 RelatedUserId = user.Id,
                 Tag = LogTags.DatabaseAction.ToString(),
-                Text = $"New user created: {username}"
+                Text = $"Yeni kullanıcı oluşturuldu: {username}"
             };
 
-            _logRepo.AddLog(log);
+            _logRepo.CreateLogAsync(log);
 
             return user;
         }

@@ -59,7 +59,7 @@ namespace JekirdekCRM.Controllers
                 return View(model);
             }
 
-            SessionHelper.SetUserSessionAndViewBag(HttpContext, user, ViewData);
+            SessionHelper.SetUserSession(HttpContext, user);
             await _logService.CreateLogAsync(LogTags.Login, "Baþarýlý giriþ yapýldý.", user.Id);
             return RedirectToAction("Index");
         }

@@ -1,32 +1,32 @@
-﻿using JekirdekCRM.Models.DBModels;
-using JekirdekCRM.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using JekirdekCRM.Models;
+using JekirdekCRM.Models.DBModels;
 
-namespace JekirdekCRM.Helpers
+public static class SessionHelper
 {
-    public static class SessionHelper
+    private const string UserSessionKey = "User";
+
+    public static User? FindUser(HttpContext httpContext)
     {
-        private const string UserSessionKey = "User";
+        if (httpContext == null)
+            return null;
 
-        public static User? FindUser(HttpContext httpContext)
-        {
-            var json = httpContext.Session.GetString(UserSessionKey);
-            return string.IsNullOrEmpty(json)
-                ? null
-                : JsonConvert.DeserializeObject<User>(json);
-        }
-
-        public static void SetUserSessionAndViewBag(HttpContext httpContext, User user, ViewDataDictionary viewData)
-        {
-            var json = JsonConvert.SerializeObject(user);
-            httpContext.Session.SetString(UserSessionKey, json);
-
-            viewData["IndexModel"] = new LayoutViewModel
-            {
-                User = user
-            };
-        }
+        var json = httpContext.Session.GetString(UserSessionKey);
+        return string.IsNullOrEmpty(json) ? null : JsonConvert.DeserializeObject<User>(json);
     }
 
+    public static void SetUserSession(HttpContext httpContext, User user)
+    {
+        if (user == null || httpContext == null)
+            return;
+
+        var json = JsonConvert.SerializeObject(user);
+        httpContext.Session.SetString(UserSessionKey, json);
+    }
+
+    public static void ClearUserSession(HttpContext httpContext)
+    {
+        httpContext?.Session?.Remove(UserSessionKey);
+    }
 }

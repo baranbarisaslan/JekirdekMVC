@@ -5,7 +5,7 @@ namespace JekirdekCRM.Repositories
 {
     public interface ILogRepository
     {
-        Task AddAsync(Log log);
+        Task CreateLogAsync(Log log);
     }
 
 }

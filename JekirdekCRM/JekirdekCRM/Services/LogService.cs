@@ -22,7 +22,7 @@ namespace JekirdekCRM.Services
                 Tag = tag.ToString()
             };
 
-            await _logRepo.AddAsync(log);
+            await _logRepo.CreateLogAsync(log);
         }
 
         public async Task CreateLogAsync(LogTags tag, string text)
@@ -34,7 +34,7 @@ namespace JekirdekCRM.Services
                 Text = text
             };
 
-            await _logRepo.AddAsync(log);
+            await _logRepo.CreateLogAsync(log);
         }
 
         public async Task CreateLogAsync(LogTags tag, string text, int userId)
@@ -47,7 +47,7 @@ namespace JekirdekCRM.Services
                 RelatedUserId = userId
             };
 
-            await _logRepo.AddAsync(log);
+            await _logRepo.CreateLogAsync(log);
         }
     }
 }

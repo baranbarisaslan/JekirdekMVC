@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("JekirdekCRM")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ada1ce0bba09809184fdab6b1536d5a21c3321b3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4673381aa865eaf57ac7bf641c02c9ea2310d1f")]
 [assembly: System.Reflection.AssemblyProductAttribute("JekirdekCRM")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JekirdekCRM")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
