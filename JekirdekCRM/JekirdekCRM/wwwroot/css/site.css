@@ -75,3 +75,57 @@ body {
     padding: 2rem;
     background-color: #f7f9fc;
 }
+
+
+
+.add-customer-wrapper {
+    max-width: 800px;
+}
+
+.add-customer-card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.form-title {
+    font-weight: 600;
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+}
+
+.form-subtitle {
+    font-size: 0.95rem;
+    color: #6c757d;
+}
+
+.custom-input {
+    border-radius: 6px;
+    padding: 0.65rem;
+    border: 1px solid #ced4da;
+    transition: all 0.3s ease;
+}
+
+    .custom-input:focus {
+        border-color: #1e3a5f;
+        box-shadow: 0 0 0 0.2rem rgba(30, 58, 95, 0.15);
+    }
+
+.form-label {
+    font-weight: 500;
+    color: #1e3a5f;
+    margin-bottom: 0.3rem;
+}
+
+.submit-btn {
+    padding: 0.75rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 6px;
+    background-color: #1e3a5f;
+    border: none;
+}
+
+    .submit-btn:hover {
+        background-color: #4169e1;
+    }
+

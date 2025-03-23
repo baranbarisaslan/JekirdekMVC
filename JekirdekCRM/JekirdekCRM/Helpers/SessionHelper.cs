@@ -5,41 +5,28 @@ using Newtonsoft.Json;
 
 namespace JekirdekCRM.Helpers
 {
-    public class SessionHelper
+    public static class SessionHelper
     {
+        private const string UserSessionKey = "User";
+
         public static User? FindUser(HttpContext httpContext)
         {
-            string? jsn = httpContext.Session.GetString("User");
-            if (string.IsNullOrEmpty(jsn))
-            {
-                return null;
-            }
-            else
-            {
-                User? user = JsonConvert.DeserializeObject<User>(jsn);
-                if (user != null)
-                {
-                    return user;
-                }
-                else
-                {
-                    return null;
-                }
-
-            }
-
+            var json = httpContext.Session.GetString(UserSessionKey);
+            return string.IsNullOrEmpty(json)
+                ? null
+                : JsonConvert.DeserializeObject<User>(json);
         }
 
         public static void SetUserSessionAndViewBag(HttpContext httpContext, User user, ViewDataDictionary viewData)
         {
-            string jsn = JsonConvert.SerializeObject(user);
-            httpContext.Session.SetString("User", jsn);
+            var json = JsonConvert.SerializeObject(user);
+            httpContext.Session.SetString(UserSessionKey, json);
 
-            LayoutViewModel layout = new LayoutViewModel
+            viewData["IndexModel"] = new LayoutViewModel
             {
                 User = user
             };
-            viewData["IndexModel"] = layout;
         }
     }
+
 }
