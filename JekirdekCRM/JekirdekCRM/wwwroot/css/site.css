@@ -129,3 +129,16 @@ body {
         background-color: #4169e1;
     }
 
+.pagination {
+    margin-bottom: 60px;
+}
+
+footer {
+    position: static;
+    z-index: auto;
+}
+
+.main-content {
+    padding-bottom: 80px; /* footer çarpmasýn */
+}
+

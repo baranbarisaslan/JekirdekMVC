@@ -13,28 +13,27 @@ namespace JekirdekCRM.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUserService _userService;
+        private readonly ICustomerService _customerService;
         private readonly ILogService _logService;
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService, ILogService logService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, ILogService logService, ICustomerService customerService)
         {
             _logger = logger;
             _userService = userService;
             _logService = logService;
+            _customerService = customerService;
         }
 
         public IActionResult Index()
         {
             var user = SessionHelper.FindUser(HttpContext);
             if (user == null)
-                return RedirectToAction("Login");
+                return RedirectToAction("Login", "Home");
 
-            var model = new IndexViewModel
-            {
-                User = user,
-            };
-
+            var model = _customerService.GetCustomerDashboardData();
             return View(model);
         }
+
 
         public IActionResult Login()
         {

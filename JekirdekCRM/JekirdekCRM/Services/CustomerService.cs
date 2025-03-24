@@ -34,7 +34,7 @@ public class CustomerService : ICustomerService
         };
 
         _customerRepo.Add(customer);
-
+        _logService.CreateLogAsync(LogTags.FilterAction, $"Müşteri oluşturuldu: \"{customer.Email}\"");
         return new ServiceResult { Success = true };
     }
 
@@ -51,5 +51,64 @@ public class CustomerService : ICustomerService
         return (customers, totalCount);
     }
 
+    public ServiceResult DeleteCustomer(int id)
+    {
+        try
+        {
+            _customerRepo.SoftDelete(id);
+            _logService.CreateLogAsync(LogTags.DatabaseAction, $"Müşteri silindi: {id}");
+            return new ServiceResult { Success = true };
+        }
+        catch (Exception ex)
+        {
+            _logService.CreateLogAsync(LogTags.Exception, $"DeleteCustomer Exception → {ex.Message}");
+            return new ServiceResult { Success = false, Message = "Silme işlemi başarısız." };
+        }
+    }
+
+
+    public CustomerViewModel? GetCustomer(int id)
+    {
+        var customer = _customerRepo.GetById(id);
+        if (customer == null)
+            return null;
+
+        return new CustomerViewModel
+        {
+            FirstName = customer.FirstName,
+            LastName = customer.LastName,
+            Email = customer.Email,
+            Region = customer.Region
+        };
+    }
+
+    public ServiceResult EditCustomer(int id, CustomerViewModel model)
+    {
+        var customer = _customerRepo.GetById(id);
+        if (customer == null)
+            return new ServiceResult { Success = false, Message = "Müşteri bulunamadı." };
+
+        customer.FirstName = model.FirstName;
+        customer.LastName = model.LastName;
+        customer.Email = model.Email;
+        customer.Region = model.Region;
+
+        _customerRepo.Update(customer);
+        _logService.CreateLogAsync(LogTags.DatabaseAction, $"Müşteri güncellendi: {customer.Email}");
+
+        return new ServiceResult { Success = true };
+    }
+
+    public IndexViewModel GetCustomerDashboardData()
+    {
+        return new IndexViewModel
+        {
+            TotalCustomerCount = _customerRepo.GetTotalCustomerCount(),
+            TodayCustomerCount = _customerRepo.GetTodayCustomerCount(),
+            ThisMonthCustomerCount = _customerRepo.GetThisMonthCustomerCount(),
+            CustomersByRegion = _customerRepo.GetCustomerCountByRegion(),
+            CustomersByMonth = _customerRepo.GetMonthlyCustomerCount()
+        };
+    }
 
 }

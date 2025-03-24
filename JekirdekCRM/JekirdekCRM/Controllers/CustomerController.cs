@@ -62,10 +62,7 @@ namespace JekirdekCRM.Controllers
                     ModelState.AddModelError("Error", result.Message);
                     return View(model);
                 }
-
-                _logService.CreateLogAsync(LogTags.DatabaseAction, $"Yeni müşteri eklendi: {model.Email}", user.Id);
-
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("ListCustomers", "Customer");
             }
             catch (Exception ex)
             {
@@ -97,5 +94,69 @@ namespace JekirdekCRM.Controllers
 
             return View(model);
         }
+
+        public IActionResult DeleteCustomer(int id)
+        {
+            var user = SessionHelper.FindUser(HttpContext);
+            if (user == null)
+                return RedirectToAction("Login", "Home");
+
+            if (user.Role != "Admin")
+            {
+                _logService.CreateLogAsync(LogTags.Error, $"{user.Username} müşteri silmeye çalıştı!", id);
+                return RedirectToAction("ListCustomers", "Customer");
+            }
+
+            var result = _customerService.DeleteCustomer(id);
+            if (!result.Success)
+            {
+                _logService.CreateLogAsync(LogTags.Error, $"{user.Username} müşteri silme işlemi gerçekleştirilemedi!");
+            }
+            return RedirectToAction("ListCustomers");
+        }
+
+
+        [HttpGet]
+        public IActionResult EditCustomer(int id)
+        {
+            var user = SessionHelper.FindUser(HttpContext);
+            if (user == null)
+                return RedirectToAction("Login", "Home");
+
+            if (user.Role != "Admin")
+            {
+                _logService.CreateLogAsync(LogTags.Error, $"{user.Username} müşteri düzenlemeye çalıştı!", id);
+                return RedirectToAction("ListCustomers", "Customer");
+            }
+
+            var customer = _customerService.GetCustomer(id);
+            if (customer == null)
+                return RedirectToAction("ListCustomers");
+
+            return View(customer);
+        }
+
+        [HttpPost]
+        public IActionResult EditCustomer(int id, CustomerViewModel model)
+        {
+            var user = SessionHelper.FindUser(HttpContext);
+            if (user == null)
+                return RedirectToAction("Login", "Home");
+
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var result = _customerService.EditCustomer(id, model);
+
+            if (!result.Success)
+            {
+                ModelState.AddModelError(string.Empty, result.Message);
+                return View(model);
+            }
+
+            return RedirectToAction("ListCustomers");
+        }
+
+
     }
 }

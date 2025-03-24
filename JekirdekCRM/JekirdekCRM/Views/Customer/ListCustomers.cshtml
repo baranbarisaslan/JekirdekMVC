@@ -14,6 +14,7 @@
     <table class="table table-bordered table-hover shadow-sm">
         <thead class="table-light">
             <tr>
+                <th style="width: 50px;">#</th>
                 <th>Id</th>
                 <th>First Name</th>
                 <th>Last Name</th>
@@ -26,9 +27,11 @@
         <tbody>
             @if (Model.Customers != null && Model.Customers.Any())
             {
+                var index = (Model.CurrentPage - 1) * Model.PageSize;
                 foreach (var customer in Model.Customers)
                 {
                     <tr>
+                        <td>@(++index)</td>
                         <td>@customer.Id</td>
                         <td>@customer.FirstName</td>
                         <td>@customer.LastName</td>
@@ -44,7 +47,11 @@
                                         <a class="dropdown-item" asp-action="EditCustomer" asp-route-id="@customer.Id">Edit</a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item text-danger" asp-action="DeleteCustomer" asp-route-id="@customer.Id">Delete</a>
+                                        <a class="dropdown-item text-danger"
+                                           href="#"
+                                           onclick="if (confirm('Are you sure you want to delete this customer?')) { window.location.href='@Url.Action("DeleteCustomer", new { id = customer.Id })'; } return false;">
+                                            Delete
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -69,10 +76,11 @@
             {
                 <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                     <a class="page-link" asp-action="ListCustomers"
-                       asp-route-search="@Model.SearchText"
                        asp-route-page="@i">@i</a>
                 </li>
             }
         </ul>
     </nav>
 </div>
+
+

@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using JekirdekCRM.Helpers
+@using JekirdekCRM.Models.DBModels
+@{
+    var user = SessionHelper.FindUser(Context);
+}
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -16,16 +23,23 @@
                 <h4>Jekirdek CRM</h4>
             </div>
             <nav class="nav flex-column nav-items">
-                <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="nav-link" asp-controller="Home" asp-action="Index">Dashboard</a>
                 <div class="nav-divider"></div>
-                <a class="nav-link" asp-controller="Customer" asp-action="AddCustomer">Add Customer</a>
-                <div class="nav-divider"></div>
+
+                @if (user?.Role == "Admin")
+                {
+                    <a class="nav-link" asp-controller="Customer" asp-action="AddCustomer">Add Customer</a>
+                    <div class="nav-divider"></div>
+                }
+
                 <a class="nav-link" asp-controller="Customer" asp-action="ListCustomers">List Customers</a>
                 <div class="nav-divider"></div>
+                <a class="nav-link" asp-controller="Home" asp-action="Logout">Logout</a>
             </nav>
+
         </aside>
 
-        <main class="main-content flex-grow-1">
+        <main class="main-content flex-grow-1 pb-5">
             @RenderBody()
         </main>
     </div>
@@ -33,6 +47,7 @@
     <footer class="border-top footer text-muted text-center p-3">
         &copy; 2025 - Jekirdek CRM
     </footer>
+
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
