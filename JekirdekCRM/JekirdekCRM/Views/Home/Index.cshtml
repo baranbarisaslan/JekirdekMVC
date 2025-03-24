@@ -1,8 +1,79 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using JekirdekCRM.Models.ViewModels
+@model IndexViewModel
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-4">
+    <h2 class="text-primary mb-4">Welcome to Jekirdek CRM</h2>
+
+    <div class="row mb-5">
+        <div class="col-md-4">
+            <div class="card text-white bg-info shadow-sm">
+                <div class="card-body">
+                    <h5>Added Today</h5>
+                    <h2>@Model.TodayCustomerCount</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-success shadow-sm">
+                <div class="card-body">
+                    <h5>Added This Month</h5>
+                    <h2>@Model.ThisMonthCustomerCount</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-primary shadow-sm">
+                <div class="card-body">
+                    <h5>Total Customers</h5>
+                    <h2>@Model.TotalCustomerCount</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <h5 class="text-primary">Customers by Region</h5>
+            <canvas id="regionChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h5 class="text-primary">Customers by Month</h5>
+            <canvas id="monthlyChart"></canvas>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+                const regionChart = new Chart(document.getElementById('regionChart'), {
+            type: 'pie',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.CustomersByRegion.Select(x => x.Region))),
+                datasets: [{
+                    data: @Html.Raw(Json.Serialize(Model.CustomersByRegion.Select(x => x.Count))),
+                    backgroundColor: ['#4a90e2', '#50e3c2', '#f5a623', '#b8e986', '#d0021b']
+                }]
+            }
+        });
+
+        const monthlyChart = new Chart(document.getElementById('monthlyChart'), {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.CustomersByMonth.Select(x => x.Month))),
+                datasets: [{
+                    label: 'New Customers',
+                    data: @Html.Raw(Json.Serialize(Model.CustomersByMonth.Select(x => x.Count))),
+                    backgroundColor: '#4a90e2'
+                }]
+            }
+        });
+
+    </script>
+}

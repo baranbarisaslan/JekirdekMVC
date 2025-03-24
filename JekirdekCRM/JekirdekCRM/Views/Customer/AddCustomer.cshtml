@@ -1,0 +1,57 @@
+﻿@model JekirdekCRM.Models.ViewModels.CustomerViewModel
+
+@{
+    ViewData["Title"] = "Add Customer";
+}
+
+<div class="add-customer-wrapper container my-5">
+    <div class="add-customer-card card shadow-sm">
+        <div class="card-header bg-white border-bottom-0">
+            <h3 class="form-title text-primary">Add New Customer</h3>
+            <p class="form-subtitle text-muted">Please fill out the details below</p>
+        </div>
+        <div class="card-body">
+            <form asp-action="AddCustomer" method="post" class="add-customer-form">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label asp-for="FirstName" class="form-label">First Name</label>
+                        <input asp-for="FirstName" class="form-control custom-input" />
+                        <span asp-validation-for="FirstName" class="form-error text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="LastName" class="form-label">Last Name</label>
+                        <input asp-for="LastName" class="form-control custom-input" />
+                        <span asp-validation-for="LastName" class="form-error text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Region" class="form-label">Region</label>
+                        <input asp-for="Region" class="form-control custom-input" />
+                        <span asp-validation-for="Region" class="form-error text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <input asp-for="Email" class="form-control custom-input" />
+                        <span asp-validation-for="Email" class="form-error text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="form-actions d-grid mt-4">
+                    <button type="submit" class="btn btn-primary submit-btn">Add Customer</button>
+                </div>
+                @if (ViewData.ModelState.ErrorCount > 0)
+                {
+                    <div class="alert alert-danger mt-3">
+
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <p class="mb-0" style="font-style:italic;">@error.ErrorMessage</p>
+                        }
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+</div>

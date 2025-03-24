@@ -1,45 +1,32 @@
-﻿using JekirdekCRM.Models.DBModels;
-using JekirdekCRM.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using JekirdekCRM.Models;
+using JekirdekCRM.Models.DBModels;
 
-namespace JekirdekCRM.Helpers
+public static class SessionHelper
 {
-    public class SessionHelper
+    private const string UserSessionKey = "User";
+
+    public static User? FindUser(HttpContext httpContext)
     {
-        public static User? FindUser(HttpContext httpContext)
-        {
-            string? jsn = httpContext.Session.GetString("User");
-            if (string.IsNullOrEmpty(jsn))
-            {
-                return null;
-            }
-            else
-            {
-                User? user = JsonConvert.DeserializeObject<User>(jsn);
-                if (user != null)
-                {
-                    return user;
-                }
-                else
-                {
-                    return null;
-                }
+        if (httpContext == null)
+            return null;
 
-            }
+        var json = httpContext.Session.GetString(UserSessionKey);
+        return string.IsNullOrEmpty(json) ? null : JsonConvert.DeserializeObject<User>(json);
+    }
 
-        }
+    public static void SetUserSession(HttpContext httpContext, User user)
+    {
+        if (user == null || httpContext == null)
+            return;
 
-        public static void SetUserSessionAndViewBag(HttpContext httpContext, User user, ViewDataDictionary viewData)
-        {
-            string jsn = JsonConvert.SerializeObject(user);
-            httpContext.Session.SetString("User", jsn);
+        var json = JsonConvert.SerializeObject(user);
+        httpContext.Session.SetString(UserSessionKey, json);
+    }
 
-            LayoutViewModel layout = new LayoutViewModel
-            {
-                User = user
-            };
-            viewData["IndexModel"] = layout;
-        }
+    public static void ClearUserSession(HttpContext httpContext)
+    {
+        httpContext?.Session?.Remove(UserSessionKey);
     }
 }
