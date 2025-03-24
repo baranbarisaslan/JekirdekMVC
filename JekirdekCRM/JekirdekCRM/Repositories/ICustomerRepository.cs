@@ -6,6 +6,8 @@ namespace JekirdekCRM.Repositories
     {
         void Add(Customer customer);
         bool ExistsByEmail(string email);
+
+        List<Customer> GetFilteredCustomers(string? search, int skip, int take, out int totalCount);
     }
 
 }

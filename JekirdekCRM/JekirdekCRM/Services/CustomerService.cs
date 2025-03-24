@@ -20,7 +20,7 @@ public class CustomerService : ICustomerService
         if (_customerRepo.ExistsByEmail(model.Email))
         {
             _logService.CreateLogAsync(LogTags.Error, "Bu e-posta zaten kayıtlı");
-            return new ServiceResult { Success = false, Message = "Bu e-posta zaten kayıtlı." };
+            return new ServiceResult { Success = false, Message = $"Bu e-posta zaten kayıtlı: {model.Email}" };
         }
 
         var customer = new Customer
@@ -37,4 +37,19 @@ public class CustomerService : ICustomerService
 
         return new ServiceResult { Success = true };
     }
+
+    public (List<Customer> Customers, int TotalCount) ListCustomers(string? search, int page, int pageSize)
+    {
+        var skip = (page - 1) * pageSize;
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            _logService.CreateLogAsync(LogTags.FilterAction, $"Müşteri filresi arandı: \"{search}\"");
+        }
+
+        var customers = _customerRepo.GetFilteredCustomers(search, skip, pageSize, out int totalCount);
+        return (customers, totalCount);
+    }
+
+
 }

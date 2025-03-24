@@ -74,5 +74,28 @@ namespace JekirdekCRM.Controllers
             }
 
         }
+
+
+        public IActionResult ListCustomers(string? search = "", int page = 1)
+        {
+            var user = SessionHelper.FindUser(HttpContext);
+            if (user == null)
+                return RedirectToAction("Login", "Home");
+
+            int pageSize = 10;
+
+            var (customers, totalCount) = _customerService.ListCustomers(search, page, pageSize);
+
+            var model = new ListCustomersViewModel
+            {
+                SearchText = search,
+                Customers = customers,
+                CurrentPage = page,
+                TotalPages = (int)Math.Ceiling((double)totalCount / pageSize),
+                PageSize = pageSize
+            };
+
+            return View(model);
+        }
     }
 }

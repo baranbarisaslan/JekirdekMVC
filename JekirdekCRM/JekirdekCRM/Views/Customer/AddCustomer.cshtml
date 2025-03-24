@@ -11,7 +11,7 @@
             <p class="form-subtitle text-muted">Please fill out the details below</p>
         </div>
         <div class="card-body">
-            <form asp-action="Add" method="post" class="add-customer-form">
+            <form asp-action="AddCustomer" method="post" class="add-customer-form">
                 <div class="row g-4">
                     <div class="col-md-6">
                         <label asp-for="FirstName" class="form-label">First Name</label>
@@ -41,6 +41,16 @@
                 <div class="form-actions d-grid mt-4">
                     <button type="submit" class="btn btn-primary submit-btn">Add Customer</button>
                 </div>
+                @if (ViewData.ModelState.ErrorCount > 0)
+                {
+                    <div class="alert alert-danger mt-3">
+
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <p class="mb-0" style="font-style:italic;">@error.ErrorMessage</p>
+                        }
+                    </div>
+                }
             </form>
         </div>
     </div>
